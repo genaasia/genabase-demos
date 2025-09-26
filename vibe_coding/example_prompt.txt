@@ -1,0 +1,25 @@
+I want to build a single-page e-commerce website for my clothing brand.
+I already have a database and simple endpoints deployed that let me interact with it.
+I’ve added the openapi.json for the API which is called genabase_openapi.json, as well as the schema.sql file which was used to create the database.
+You can use these files to understand the database schema and learn how to read from and write to it.
+The website should use this endpoint:
+* **API Base URL:** `https://api.genabase.com/`
+* **tenantId:** `google-oauth2|12345678901234567890`
+* **dbName:** `default`
+Requirements:
+* Display products from the DB (including variants).
+* Allow customers to add products to a cart.
+* Write cart additions to the database.
+* Let customers finalize their shopping and create an order, which should also be written to the database.
+Notes:
+* No customer sign-ups or accounts.
+* No admin page.
+* Only a simple, single-page website.
+* The insert endpoints doesn't return the inserted data back
+Technical details:
+When you insert data, you can use the return_columns property in the request to get back the id or other columns created for the row.
+Workflow Notes:
+When an order is done, first create a user.
+Insert the order to the orders table with the newly created customer id.
+Also insert the items for the order to the line_items table.
+Also insert the address for the order to order_addresses (both the shipping and the billing address)
