@@ -1,0 +1,1400 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Genabase Api Service",
+    "description": "Api service for databases supporting select, insert, update, and delete operations",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/tenants/{tenant_id}/databases/{db_name}/execute": {
+      "post": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Execute Operation",
+        "description": "Execute a single operation on a tenant database.\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    request: Operation request\n\nReturns:\n    Operation result\n\nRaises:\n    HTTPException: If operation fails",
+        "operationId": "execute_operation_tenants__tenant_id__databases__db_name__execute_post",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ApiRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/bulk": {
+      "post": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Execute Bulk Operations",
+        "description": "Execute multiple operations as separate transactions.\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    request: Bulk operations request\n\nReturns:\n    Bulk operation results\n\nRaises:\n    HTTPException: If request is invalid",
+        "operationId": "execute_bulk_operations_tenants__tenant_id__databases__db_name__bulk_post",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/BulkApiRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/tables": {
+      "get": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "List Tables",
+        "description": "List tables in a tenant database or get details for a specific table.\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    table_name: Optional specific table name\n\nReturns:\n    Table information\n\nRaises:\n    HTTPException: If authentication fails or database access fails",
+        "operationId": "list_tables_tenants__tenant_id__databases__db_name__tables_get",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          },
+          {
+            "name": "table_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Specific table name to get details for",
+              "title": "Table Name"
+            },
+            "description": "Specific table name to get details for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SQLQueryResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/tables/{table}/select": {
+      "post": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Select Records",
+        "description": "Select records from a table (convenience endpoint).\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    table: Table name\n    where_conditions: WHERE conditions\n    return_columns: Columns to return\n    limit: Maximum rows to return\n    offset: Number of rows to skip\n    order_by: ORDER BY columns\n\nReturns:\n    Select operation result",
+        "operationId": "select_records_tenants__tenant_id__databases__db_name__tables__table__select_post",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          },
+          {
+            "name": "table",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Table name",
+              "title": "Table"
+            },
+            "description": "Table name"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SelectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/tables/{table}/insert": {
+      "post": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Insert Records",
+        "description": "Insert records into a table (convenience endpoint).\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    table: Table name\n    insert_request: Insert request containing data and return_columns\n\nReturns:\n    Insert operation result",
+        "operationId": "insert_records_tenants__tenant_id__databases__db_name__tables__table__insert_post",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          },
+          {
+            "name": "table",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Table name",
+              "title": "Table"
+            },
+            "description": "Table name"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InsertRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/tables/{table}/update": {
+      "put": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Update Records",
+        "description": "Update records in a table (convenience endpoint).\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    table: Table name\n    update_request: Update request containing data, where_conditions, and return_columns\n\nReturns:\n    Update operation result",
+        "operationId": "update_records_tenants__tenant_id__databases__db_name__tables__table__update_put",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          },
+          {
+            "name": "table",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Table name",
+              "title": "Table"
+            },
+            "description": "Table name"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/tables/{table}/delete": {
+      "delete": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Delete Records",
+        "description": "Delete records from a table (convenience endpoint).\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    table: Table name\n    delete_request: Delete request containing where_conditions and return_columns\n\nReturns:\n    Delete operation result",
+        "operationId": "delete_records_tenants__tenant_id__databases__db_name__tables__table__delete_delete",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          },
+          {
+            "name": "table",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Table name",
+              "title": "Table"
+            },
+            "description": "Table name"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/tables/{table}/schema": {
+      "get": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Get Table Schema",
+        "description": "Get schema information for a table.\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    table: Table name\n\nReturns:\n    Table schema information\n\nRaises:\n    HTTPException: If schema cannot be retrieved",
+        "operationId": "get_table_schema_tenants__tenant_id__databases__db_name__tables__table__schema_get",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          },
+          {
+            "name": "table",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Table name",
+              "title": "Table"
+            },
+            "description": "Table name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TableSchemaResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tenants/{tenant_id}/databases/{db_name}/tables/{table}/validate": {
+      "post": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Validate Data",
+        "description": "Validate data against table schema without executing operations.\n\nArgs:\n    tenant_id: Tenant identifier\n    db_name: Database name\n    table: Table name\n    data: Data to validate\n\nReturns:\n    Validation results\n\nRaises:\n    HTTPException: If validation cannot be performed",
+        "operationId": "validate_data_tenants__tenant_id__databases__db_name__tables__table__validate_post",
+        "parameters": [
+          {
+            "name": "tenant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Tenant identifier",
+              "title": "Tenant Id"
+            },
+            "description": "Tenant identifier"
+          },
+          {
+            "name": "db_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Database name",
+              "title": "Db Name"
+            },
+            "description": "Database name"
+          },
+          {
+            "name": "table",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Table name",
+              "title": "Table"
+            },
+            "description": "Table name"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Health Check",
+        "description": "Health check endpoint for the api service.\n\nReturns:\n    Health status",
+        "operationId": "health_check_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/examples": {
+      "get": {
+        "tags": [
+          "API Operations"
+        ],
+        "summary": "Get Examples",
+        "description": "Get example requests for different operations.\n\nReturns:\n    Example request payloads",
+        "operationId": "get_examples_examples_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiRequest": {
+        "properties": {
+          "operation": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OperationType"
+              }
+            ],
+            "description": "Type of operation to perform"
+          },
+          "table": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Table",
+            "description": "Target table name"
+          },
+          "data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "minItems": 0,
+            "title": "Data",
+            "description": "Data records to operate on"
+          },
+          "where_conditions": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/WhereCondition"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Where Conditions",
+            "description": "WHERE conditions for UPDATE/DELETE/SELECT. Format: [{'column': 'name', 'op': 'eq', 'value': 'test'}]"
+          },
+          "return_columns": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Return Columns",
+            "description": "Columns to return (for RETURNING clause or SELECT)"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 10000,
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit",
+            "description": "Maximum rows to return for SELECT operations"
+          },
+          "offset": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Offset",
+            "description": "Number of rows to skip for SELECT operations"
+          },
+          "order_by": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/OrderByColumn"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Order By",
+            "description": "ORDER BY columns for SELECT operations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "operation",
+          "table",
+          "data"
+        ],
+        "title": "ApiRequest",
+        "description": "Request model for operations."
+      },
+      "ApiResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "title": "Success"
+          },
+          "operation": {
+            "$ref": "#/components/schemas/OperationType"
+          },
+          "table": {
+            "type": "string",
+            "title": "Table"
+          },
+          "affected_rows": {
+            "type": "integer",
+            "title": "Affected Rows"
+          },
+          "execution_time_ms": {
+            "type": "number",
+            "title": "Execution Time Ms"
+          },
+          "returned_data": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Returned Data"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "success",
+          "operation",
+          "table",
+          "affected_rows",
+          "execution_time_ms"
+        ],
+        "title": "ApiResponse",
+        "description": "Response model for operations."
+      },
+      "BulkApiRequest": {
+        "properties": {
+          "operations": {
+            "items": {
+              "$ref": "#/components/schemas/ApiRequest"
+            },
+            "type": "array",
+            "title": "Operations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "operations"
+        ],
+        "title": "BulkApiRequest",
+        "description": "Request model for bulk operations."
+      },
+      "BulkApiResponse": {
+        "properties": {
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ApiResponse"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "total_operations": {
+            "type": "integer",
+            "title": "Total Operations"
+          },
+          "successful_operations": {
+            "type": "integer",
+            "title": "Successful Operations"
+          },
+          "failed_operations": {
+            "type": "integer",
+            "title": "Failed Operations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "results",
+          "total_operations",
+          "successful_operations",
+          "failed_operations"
+        ],
+        "title": "BulkApiResponse",
+        "description": "Response model for bulk operations."
+      },
+      "DeleteRequest": {
+        "properties": {
+          "where_conditions": {
+            "items": {
+              "$ref": "#/components/schemas/WhereCondition"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Where Conditions",
+            "description": "WHERE conditions for DELETE operation"
+          },
+          "return_columns": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Return Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "where_conditions"
+        ],
+        "title": "DeleteRequest",
+        "description": "Request model for DELETE operations."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InsertRequest": {
+        "properties": {
+          "data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Data",
+            "description": "Data records to insert"
+          },
+          "return_columns": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Return Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "InsertRequest",
+        "description": "Request model for INSERT operations."
+      },
+      "OperationType": {
+        "type": "string",
+        "enum": [
+          "insert",
+          "update",
+          "delete",
+          "select"
+        ],
+        "title": "OperationType",
+        "description": "Supported database operations."
+      },
+      "OrderByColumn": {
+        "properties": {
+          "column": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Column",
+            "description": "Column name to order by"
+          },
+          "direction": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OrderDirection"
+              }
+            ],
+            "description": "Sort direction (ASC or DESC)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "column",
+          "direction"
+        ],
+        "title": "OrderByColumn",
+        "description": "Model for ORDER BY column specification."
+      },
+      "OrderDirection": {
+        "type": "string",
+        "enum": [
+          "ASC",
+          "DESC"
+        ],
+        "title": "OrderDirection",
+        "description": "Supported order directions."
+      },
+      "SQLQueryResponse": {
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "title": "Tenant Id"
+          },
+          "db_name": {
+            "type": "string",
+            "title": "Db Name"
+          },
+          "query": {
+            "type": "string",
+            "title": "Query"
+          },
+          "rows_returned": {
+            "type": "integer",
+            "title": "Rows Returned"
+          },
+          "execution_time_ms": {
+            "type": "number",
+            "title": "Execution Time Ms"
+          },
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns"
+          },
+          "data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Data"
+          },
+          "truncated": {
+            "type": "boolean",
+            "title": "Truncated",
+            "description": "Whether results were truncated due to limit",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "tenant_id",
+          "db_name",
+          "query",
+          "rows_returned",
+          "execution_time_ms",
+          "columns",
+          "data"
+        ],
+        "title": "SQLQueryResponse",
+        "description": "Response model for SQL query execution."
+      },
+      "SelectRequest": {
+        "properties": {
+          "where_conditions": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/WhereCondition"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Where Conditions"
+          },
+          "return_columns": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Return Columns"
+          },
+          "limit": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 10000,
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Limit"
+          },
+          "offset": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Offset"
+          },
+          "order_by": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/OrderByColumn"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Order By"
+          }
+        },
+        "type": "object",
+        "title": "SelectRequest",
+        "description": "Request model for SELECT operations."
+      },
+      "TableSchemaResponse": {
+        "properties": {
+          "table": {
+            "type": "string",
+            "title": "Table"
+          },
+          "columns": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "table",
+          "columns"
+        ],
+        "title": "TableSchemaResponse",
+        "description": "Response model for table schema information."
+      },
+      "UpdateRequest": {
+        "properties": {
+          "data": {
+            "items": {
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "minItems": 1,
+            "title": "Data",
+            "description": "Data records to update"
+          },
+          "where_conditions": {
+            "items": {
+              "$ref": "#/components/schemas/WhereCondition"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Where Conditions",
+            "description": "WHERE conditions for UPDATE operation"
+          },
+          "return_columns": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Return Columns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data",
+          "where_conditions"
+        ],
+        "title": "UpdateRequest",
+        "description": "Request model for UPDATE operations."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "ValidationResponse": {
+        "properties": {
+          "valid": {
+            "type": "boolean",
+            "title": "Valid"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "table": {
+            "type": "string",
+            "title": "Table"
+          }
+        },
+        "type": "object",
+        "required": [
+          "valid",
+          "warnings",
+          "table"
+        ],
+        "title": "ValidationResponse",
+        "description": "Response model for data validation."
+      },
+      "WhereCondition": {
+        "properties": {
+          "column": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Column",
+            "description": "Column name"
+          },
+          "op": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WhereOperator"
+              }
+            ],
+            "description": "Comparison operator"
+          },
+          "value": {
+            "title": "Value",
+            "description": "Value to compare against"
+          }
+        },
+        "type": "object",
+        "required": [
+          "column",
+          "op",
+          "value"
+        ],
+        "title": "WhereCondition",
+        "description": "Model for WHERE condition with explicit column, operator, and value."
+      },
+      "WhereOperator": {
+        "type": "string",
+        "enum": [
+          "eq",
+          "not_eq",
+          "gt",
+          "gte",
+          "lt",
+          "lte",
+          "like",
+          "ilike"
+        ],
+        "title": "WhereOperator",
+        "description": "Supported WHERE clause operators."
+      }
+    }
+  }
+}
